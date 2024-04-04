@@ -22,4 +22,5 @@ fun TodoListApp() {
 
 sealed class Screen(val route: String) {
     object Main : Screen("main")
+    object Edit : Screen("edit")
 }
