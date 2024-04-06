@@ -1,11 +1,6 @@
 package com.example.composetodolist.ui
 
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Scaffold
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
@@ -17,25 +12,16 @@ import com.example.composetodolist.ui.screen.MainScreen
 @Composable
 fun TodoListApp() {
     val navController = rememberNavController()
-
-    Scaffold(
-        floatingActionButton = {
-            FloatingActionButton(onClick = { navController.navigate(Screen.Edit.route) }) {
-                Icon(Icons.Filled.Edit, contentDescription = "Edit")
-            }
+    NavHost(
+        navController = navController,
+        startDestination = Screen.Main.route,
+        modifier = Modifier.fillMaxSize()
+    ) {
+        composable(Screen.Main.route) {
+            MainScreen(navController = navController)
         }
-    ) { paddingValues ->
-        NavHost(
-            navController = navController,
-            startDestination = Screen.Main.route,
-            modifier = Modifier.padding(paddingValues)
-        ) {
-            composable(Screen.Main.route) {
-                MainScreen()
-            }
-            composable(Screen.Edit.route) {
-                EditScreen()
-            }
+        composable(Screen.Edit.route) {
+            EditScreen()
         }
     }
 }
