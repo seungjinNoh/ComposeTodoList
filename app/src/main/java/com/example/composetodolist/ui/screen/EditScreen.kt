@@ -23,9 +23,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import com.example.composetodolist.data.TodoItemViewModel
+import com.example.composetodolist.data.model.TodoItem
 
 @Composable
-fun EditScreen() {
+fun EditScreen(
+    viewModel: TodoItemViewModel,
+    navController: NavController
+) {
 
     var titleText by remember { mutableStateOf(TextFieldValue("")) }
     var descriptionText by remember { mutableStateOf(TextFieldValue("")) }
@@ -44,7 +50,15 @@ fun EditScreen() {
             )
 
             IconButton(
-                onClick = { /*TODO*/ },
+                onClick = {
+                    viewModel.addTodoItem(TodoItem(
+                        title = titleText.text,
+                        description = descriptionText.text,
+                        isComplete = false
+                    ))
+                    // MainScreen으로 네비게이션
+                    navController.popBackStack()
+                },
                 modifier = Modifier.align(Alignment.CenterVertically)
             ) {
                 Icon(
