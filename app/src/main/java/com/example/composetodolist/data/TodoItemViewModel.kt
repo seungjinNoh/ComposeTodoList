@@ -2,6 +2,7 @@ package com.example.composetodolist.data
 
 import androidx.lifecycle.ViewModel
 import com.example.composetodolist.data.model.TodoItem
+import java.util.UUID
 
 class TodoItemViewModel : ViewModel() {
 
@@ -16,6 +17,13 @@ class TodoItemViewModel : ViewModel() {
                 isComplete = todoItem.isComplete
             )
         )
+    }
+
+    fun updateTodoItemCompletion(itemId: UUID, isComplete: Boolean) {
+        _todoItems.find { it.id == itemId }?.let {
+            val updatedItem = it.copy(isComplete = isComplete)
+            _todoItems[_todoItems.indexOf(it)] = updatedItem
+        }
     }
 
 }
