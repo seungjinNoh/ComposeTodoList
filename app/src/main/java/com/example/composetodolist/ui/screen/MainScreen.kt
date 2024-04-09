@@ -17,8 +17,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -41,15 +39,17 @@ fun MainScreen(
         }
     ) { paddingValues ->
         LazyColumn(contentPadding = paddingValues) {
-            items(items = viewModel.todoItems, key = { item -> item.hashCode()}) { item ->
-                TodoItemView(todoItem = item)
+            items(items = viewModel.todoItems, key = { item -> item.id}) { item ->
+                TodoItemView(todoItem = item) { isCheck ->
+                    viewModel.updateTodoItemCompletion(itemId = item.id, isCheck)
+                }
             }
         }
     }
 }
 
 @Composable
-fun TodoItemView(todoItem: TodoItem) {
+fun TodoItemView(todoItem: TodoItem, onCheck: (Boolean) -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -66,10 +66,9 @@ fun TodoItemView(todoItem: TodoItem) {
         }
         Checkbox(
             checked = todoItem.isComplete,
-//            onCheckedChange = { isChecked ->
-//                onCheckedChange(isChecked)
-//            }
-            onCheckedChange = null
+            onCheckedChange = { isCheck ->
+                onCheck(isCheck)
+            }
         )
     }
 }
