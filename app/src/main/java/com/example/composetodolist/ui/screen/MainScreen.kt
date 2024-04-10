@@ -1,6 +1,5 @@
 package com.example.composetodolist.ui.screen
 
-import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -17,6 +16,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -31,6 +32,9 @@ fun MainScreen(
     viewModel: TodoItemViewModel,
     navController: NavController
 ) {
+
+    val todoItems by viewModel.todoItems.collectAsState()
+
     Scaffold(
         floatingActionButton = {
             FloatingActionButton(onClick = { navController.navigate(Screen.Edit.route) }) {
@@ -39,9 +43,9 @@ fun MainScreen(
         }
     ) { paddingValues ->
         LazyColumn(contentPadding = paddingValues) {
-            items(items = viewModel.todoItems, key = { item -> item.id}) { item ->
-                TodoItemView(todoItem = item) { isCheck ->
-                    viewModel.updateTodoItemCompletion(itemId = item.id, isCheck)
+            items(items = todoItems, key = { item -> item.id }) { item ->
+                TodoItemView(todoItem = item) { isComplete ->
+                    viewModel.updateTodoItemCompletion(item.id, isComplete)
                 }
             }
         }

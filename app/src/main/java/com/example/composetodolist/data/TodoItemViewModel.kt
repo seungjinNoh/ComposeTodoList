@@ -1,28 +1,29 @@
 package com.example.composetodolist.data
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.composetodolist.data.model.TodoItem
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 import java.util.UUID
 
 class TodoItemViewModel : ViewModel() {
 
-    private val _todoItems = mutableListOf<TodoItem>()
-    val todoItems: List<TodoItem> get() = _todoItems
+    private val _todoItems = MutableStateFlow<List<TodoItem>>(emptyList())
+    val todoItems: StateFlow<List<TodoItem>> = _todoItems
 
     fun addTodoItem(todoItem: TodoItem) {
-        _todoItems.add(
-            TodoItem(
-                title = todoItem.title,
-                description = todoItem.description,
-                isComplete = todoItem.isComplete
-            )
-        )
+        viewModelScope.launch {
+            _todoItems.value = _todoItems.value + todoItem
+        }
     }
 
     fun updateTodoItemCompletion(itemId: UUID, isComplete: Boolean) {
-        _todoItems.find { it.id == itemId }?.let {
-            val updatedItem = it.copy(isComplete = isComplete)
-            _todoItems[_todoItems.indexOf(it)] = updatedItem
+        viewModelScope.launch {
+            _todoItems.value = _todoItems.value.map { item ->
+                if (item.id == itemId) item.copy(isComplete = isComplete) else item
+            }
         }
     }
 
