@@ -1,5 +1,6 @@
 package com.example.composetodolist.ui.screen
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -37,27 +38,45 @@ fun MainScreen(
 
     Scaffold(
         floatingActionButton = {
-            FloatingActionButton(onClick = { navController.navigate(Screen.Edit.route) }) {
+            FloatingActionButton(onClick = {
+                viewModel.setSelectedItem(
+                    TodoItem(
+                        title = "",
+                        description = "",
+                        isComplete = false
+                    )
+                )
+                navController.navigate(Screen.Edit.route)
+            }) {
                 Icon(Icons.Filled.Edit, contentDescription = "Edit")
             }
         }
     ) { paddingValues ->
         LazyColumn(contentPadding = paddingValues) {
             items(items = todoItems, key = { item -> item.id }) { item ->
-                TodoItemView(todoItem = item) { isComplete ->
-                    viewModel.updateTodoItemCompletion(item.id, isComplete)
-                }
+                TodoItemView(
+                    todoItem = item,
+                    onCheck = { isComplete ->
+                        viewModel.updateTodoItemCompletion(item.id, isComplete)
+                    },
+                    onClick = {
+                        viewModel.setSelectedItem(item)
+                        navController.navigate(Screen.Edit.route)
+                    }
+                )
             }
         }
     }
 }
 
+
 @Composable
-fun TodoItemView(todoItem: TodoItem, onCheck: (Boolean) -> Unit) {
+fun TodoItemView(todoItem: TodoItem, onCheck: (Boolean) -> Unit, onClick: () -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp),
+            .padding(16.dp)
+            .clickable(onClick = onClick),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Column(modifier = Modifier.weight(1f)) {

@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.composetodolist.data.TodoItemViewModel
 import com.example.composetodolist.data.model.TodoItem
+import java.util.UUID
 
 @Composable
 fun EditScreen(
@@ -33,8 +34,9 @@ fun EditScreen(
     navController: NavController
 ) {
 
-    var titleText by remember { mutableStateOf(TextFieldValue("")) }
-    var descriptionText by remember { mutableStateOf(TextFieldValue("")) }
+    val selectedItem by viewModel.selectedItem
+    var titleText by remember { mutableStateOf(TextFieldValue(selectedItem?.title ?: "")) }
+    var descriptionText by remember { mutableStateOf(TextFieldValue(selectedItem?.description ?: "")) }
 
     Column(
         modifier = Modifier
@@ -51,10 +53,11 @@ fun EditScreen(
 
             IconButton(
                 onClick = {
-                    viewModel.addTodoItem(TodoItem(
+                    viewModel.addOrUpdateTodoItem(TodoItem(
+                        id = selectedItem?.id ?: UUID.randomUUID(),
                         title = titleText.text,
                         description = descriptionText.text,
-                        isComplete = false
+                        isComplete = selectedItem?.isComplete ?: false
                     ))
                     // MainScreen으로 네비게이션
                     navController.popBackStack()
