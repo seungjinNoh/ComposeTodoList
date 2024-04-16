@@ -57,7 +57,9 @@ fun MainScreen(
                 TodoItemView(
                     todoItem = item,
                     onCheck = { isComplete ->
-                        viewModel.updateTodoItemCompletion(item.id, isComplete)
+                              viewModel.addOrUpdateTodoItem(
+                                  item.copy(isComplete = isComplete)
+                              )
                     },
                     onClick = {
                         viewModel.setSelectedItem(item)
