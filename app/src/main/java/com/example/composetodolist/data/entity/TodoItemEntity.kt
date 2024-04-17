@@ -10,5 +10,6 @@ data class TodoItemEntity(
     val id: UUID = UUID.randomUUID(),
     val title: String,
     val description: String,
-    var isComplete: Boolean
+    var isComplete: Boolean,
+    val createdDate: Long
 )

@@ -17,6 +17,7 @@ fun mapperItemToEntity(todoItem: TodoItem): TodoItemEntity {
         id = todoItem.id,
         title = todoItem.title,
         description = todoItem.description,
-        isComplete = todoItem.isComplete
+        isComplete = todoItem.isComplete,
+        createdDate = todoItem.createdDate
     )
 }
