@@ -57,7 +57,8 @@ fun EditScreen(
                         id = selectedItem?.id ?: UUID.randomUUID(),
                         title = titleText.text,
                         description = descriptionText.text,
-                        isComplete = selectedItem?.isComplete ?: false
+                        isComplete = selectedItem?.isComplete ?: false,
+                        createdDate = selectedItem?.createdDate ?: System.currentTimeMillis()
                     ))
                     // MainScreen으로 네비게이션
                     navController.popBackStack()

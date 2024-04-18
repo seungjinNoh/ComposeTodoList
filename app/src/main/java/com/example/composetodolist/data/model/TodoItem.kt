@@ -7,5 +7,5 @@ data class TodoItem(
     val title: String,
     val description: String,
     var isComplete: Boolean,
-    val createdDate: Long = System.currentTimeMillis()
+    val createdDate: Long
 )

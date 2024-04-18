@@ -43,7 +43,8 @@ fun MainScreen(
                     TodoItem(
                         title = "",
                         description = "",
-                        isComplete = false
+                        isComplete = false,
+                        createdDate = System.currentTimeMillis()
                     )
                 )
                 navController.navigate(Screen.Edit.route)
