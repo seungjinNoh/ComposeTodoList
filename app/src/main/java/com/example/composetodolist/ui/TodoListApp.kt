@@ -3,6 +3,7 @@ package com.example.composetodolist.ui
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -14,7 +15,7 @@ import com.example.composetodolist.ui.screen.MainScreen
 @Composable
 fun TodoListApp() {
     val navController = rememberNavController()
-    val viewModel: TodoItemViewModel = viewModel()
+    val viewModel: TodoItemViewModel = hiltViewModel()
     NavHost(
         navController = navController,
         startDestination = Screen.Main.route,
