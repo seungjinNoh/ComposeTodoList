@@ -12,6 +12,11 @@ interface TodoItemDao {
 
     @Query("SELECT * FROM todo_items ORDER BY createdDate DESC")
     fun getAllTodoItems(): Flow<List<TodoItemEntity>>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertOrUpdateTodoItem(todoItemEntity: TodoItemEntity)
+
+    @Query("SELECT * FROM todo_items WHERE id = :id")
+    suspend fun getTodoItemById(id: String): TodoItemEntity?
+
 }

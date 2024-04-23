@@ -8,4 +8,8 @@ interface TodoItemRepository {
     fun getAllTodoItems(): Flow<List<TodoItem>>
 
     suspend fun insertOrUpdateTodoItem(todoItem: TodoItem)
+
+    suspend fun getTodoItemById(id: String): TodoItem?
+
+
 }
