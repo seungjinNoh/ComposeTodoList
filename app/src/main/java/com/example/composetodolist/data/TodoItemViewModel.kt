@@ -42,15 +42,19 @@ class TodoItemViewModel @Inject constructor(
     }
 
     fun loadItemById(id: String) = viewModelScope.launch {
-        val item = todoItemRepository.getTodoItemById(id)
-        _editItem.value = item ?:
-        TodoItem(
-            id = UUID.randomUUID(),
-            title = "",
-            description = "",
-            isComplete = false,
-            createdDate = System.currentTimeMillis()
-        )
+        if (id == "new") {
+            _editItem.value = TodoItem(
+                id = UUID.randomUUID(),
+                title = "",
+                description = "",
+                isComplete = false,
+                createdDate = System.currentTimeMillis()
+            )
+        } else {
+            val uuid = UUID.fromString(id)
+            val item = todoItemRepository.getTodoItemById(uuid)
+            _editItem.value = item
+        }
     }
 
 }

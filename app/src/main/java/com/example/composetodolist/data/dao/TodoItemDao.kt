@@ -6,6 +6,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.example.composetodolist.data.entity.TodoItemEntity
 import kotlinx.coroutines.flow.Flow
+import java.util.UUID
 
 @Dao
 interface TodoItemDao {
@@ -17,6 +18,6 @@ interface TodoItemDao {
     suspend fun insertOrUpdateTodoItem(todoItemEntity: TodoItemEntity)
 
     @Query("SELECT * FROM todo_items WHERE id = :id")
-    suspend fun getTodoItemById(id: String): TodoItemEntity?
+    suspend fun getTodoItemById(id: UUID): TodoItemEntity?
 
 }

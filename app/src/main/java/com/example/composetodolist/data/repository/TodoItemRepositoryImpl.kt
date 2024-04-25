@@ -6,6 +6,7 @@ import com.example.composetodolist.data.mapperItemToEntity
 import com.example.composetodolist.data.model.TodoItem
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import java.util.UUID
 import javax.inject.Inject
 
 class TodoItemRepositoryImpl @Inject constructor(
@@ -20,7 +21,7 @@ class TodoItemRepositoryImpl @Inject constructor(
         todoItemDao.insertOrUpdateTodoItem(mapperItemToEntity(todoItem = todoItem))
     }
 
-    override suspend fun getTodoItemById(id: String): TodoItem? {
+    override suspend fun getTodoItemById(id: UUID): TodoItem? {
         val entity = todoItemDao.getTodoItemById(id)
         return entity?.let { mapperEntityToItem(it) }
     }
