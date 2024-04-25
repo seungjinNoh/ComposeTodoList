@@ -14,6 +14,8 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -31,57 +33,66 @@ import java.util.UUID
 @Composable
 fun EditScreen(
     viewModel: TodoItemViewModel,
-    navController: NavController
+    navController: NavController,
+    itemId: String = ""
 ) {
 
-    val selectedItem by viewModel.selectedItem
-    var titleText by remember { mutableStateOf(TextFieldValue(selectedItem?.title ?: "")) }
-    var descriptionText by remember { mutableStateOf(TextFieldValue(selectedItem?.description ?: "")) }
+    LaunchedEffect(itemId) {
+        viewModel.loadItemById(id = itemId)
+    }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp)
-    ) {
-        Row {
-            OutlinedTextField(
-                modifier = Modifier.weight(1f),
-                value = titleText,
-                placeholder = { Text("제목을 입력하세요.") },
-                onValueChange = { titleText = it },
-            )
+    val todoItem by viewModel.editItem.collectAsState()
 
-            IconButton(
-                onClick = {
-                    viewModel.addOrUpdateTodoItem(TodoItem(
-                        id = selectedItem?.id ?: UUID.randomUUID(),
-                        title = titleText.text,
-                        description = descriptionText.text,
-                        isComplete = selectedItem?.isComplete ?: false,
-                        createdDate = selectedItem?.createdDate ?: System.currentTimeMillis()
-                    ))
-                    // MainScreen으로 네비게이션
-                    navController.popBackStack()
-                },
-                modifier = Modifier.align(Alignment.CenterVertically)
-            ) {
-                Icon(
-                    imageVector = Icons.Filled.Done,
-                    contentDescription = "저장",
-                    tint = Color.Green
-                )
-            }
-        }
-        
-        Spacer(modifier = Modifier.height(16.dp))
-        OutlinedTextField(
+    todoItem?.let { item ->
+        var titleText by remember { mutableStateOf(TextFieldValue(item.title)) }
+        var descriptionText by remember { mutableStateOf(TextFieldValue(item.description)) }
+
+        Column(
             modifier = Modifier
-                .fillMaxWidth()
-                .weight(0.7f),
-            value = descriptionText,
-            onValueChange = { descriptionText = it },
-            placeholder = { Text(text = "내용을 입력하세요.") }
-        )
-        Spacer(modifier = Modifier.weight(0.3f))
+                .fillMaxSize()
+                .padding(16.dp)
+        ) {
+            Row {
+                OutlinedTextField(
+                    modifier = Modifier.weight(1f),
+                    value = titleText,
+                    placeholder = { Text("제목을 입력하세요.") },
+                    onValueChange = { titleText = it },
+                )
+
+                IconButton(
+                    onClick = {
+                        viewModel.addOrUpdateTodoItem(TodoItem(
+                            id = item.id,
+                            title = titleText.text,
+                            description = descriptionText.text,
+                            isComplete = item.isComplete,
+                            createdDate = item.createdDate
+                        ))
+                        // MainScreen으로 네비게이션
+                        navController.popBackStack()
+                    },
+                    modifier = Modifier.align(Alignment.CenterVertically)
+                ) {
+                    Icon(
+                        imageVector = Icons.Filled.Done,
+                        contentDescription = "저장",
+                        tint = Color.Green
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+            OutlinedTextField(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(0.7f),
+                value = descriptionText,
+                onValueChange = { descriptionText = it },
+                placeholder = { Text(text = "내용을 입력하세요.") }
+            )
+            Spacer(modifier = Modifier.weight(0.3f))
+        }
+
     }
 }

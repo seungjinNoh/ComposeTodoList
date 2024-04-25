@@ -47,7 +47,7 @@ fun MainScreen(
                         createdDate = System.currentTimeMillis()
                     )
                 )
-                navController.navigate(Screen.Edit.route)
+                navController.navigate("edit/new")
             }) {
                 Icon(Icons.Filled.Edit, contentDescription = "Edit")
             }
@@ -63,8 +63,7 @@ fun MainScreen(
                               )
                     },
                     onClick = {
-                        viewModel.setSelectedItem(item)
-                        navController.navigate(Screen.Edit.route)
+                        navController.navigate("edit/${item.id.toString()}")
                     }
                 )
             }
