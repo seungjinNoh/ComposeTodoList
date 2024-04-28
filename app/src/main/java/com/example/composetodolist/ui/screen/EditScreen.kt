@@ -43,10 +43,10 @@ fun EditScreen(
 
     val todoItem by viewModel.editItem.collectAsState()
 
-    todoItem?.let { item ->
-        var titleText by remember { mutableStateOf(TextFieldValue(item.title)) }
-        var descriptionText by remember { mutableStateOf(TextFieldValue(item.description)) }
+    var titleText by remember(todoItem) { mutableStateOf(TextFieldValue(todoItem?.title ?: "")) }
+    var descriptionText by remember(todoItem) { mutableStateOf(TextFieldValue(todoItem?.description ?: "")) }
 
+    todoItem?.let { item ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
