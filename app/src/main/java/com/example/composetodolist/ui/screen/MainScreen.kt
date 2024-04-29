@@ -10,10 +10,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -27,6 +29,7 @@ import androidx.navigation.NavController
 import com.example.composetodolist.data.TodoItemViewModel
 import com.example.composetodolist.data.model.TodoItem
 import com.example.composetodolist.ui.Screen
+import java.util.UUID
 
 @Composable
 fun MainScreen(
@@ -62,9 +65,8 @@ fun MainScreen(
                                   item.copy(isComplete = isComplete)
                               )
                     },
-                    onClick = {
-                        navController.navigate("edit/${item.id.toString()}")
-                    }
+                    onClick = { navController.navigate("edit/${item.id}") },
+                    onDelete = { viewModel.deleteItemById(UUID.fromString(item.id.toString())) }
                 )
             }
         }
@@ -73,7 +75,7 @@ fun MainScreen(
 
 
 @Composable
-fun TodoItemView(todoItem: TodoItem, onCheck: (Boolean) -> Unit, onClick: () -> Unit) {
+fun TodoItemView(todoItem: TodoItem, onCheck: (Boolean) -> Unit, onClick: () -> Unit, onDelete: () -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -95,5 +97,8 @@ fun TodoItemView(todoItem: TodoItem, onCheck: (Boolean) -> Unit, onClick: () -> 
                 onCheck(isCheck)
             }
         )
+        IconButton(onClick = onDelete) {
+            Icon(imageVector = Icons.Default.Delete, contentDescription = "Delete")
+        }
     }
 }

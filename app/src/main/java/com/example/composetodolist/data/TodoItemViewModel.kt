@@ -57,4 +57,8 @@ class TodoItemViewModel @Inject constructor(
         }
     }
 
+    fun deleteItemById(id: UUID) = viewModelScope.launch {
+        todoItemRepository.deleteItemById(id)
+    }
+
 }

@@ -26,4 +26,8 @@ class TodoItemRepositoryImpl @Inject constructor(
         return entity?.let { mapperEntityToItem(it) }
     }
 
+    override suspend fun deleteItemById(id: UUID) {
+        todoItemDao.deleteItemById(id)
+    }
+
 }

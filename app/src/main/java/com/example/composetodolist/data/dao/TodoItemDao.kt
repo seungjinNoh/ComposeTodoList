@@ -20,4 +20,7 @@ interface TodoItemDao {
     @Query("SELECT * FROM todo_items WHERE id = :id")
     suspend fun getTodoItemById(id: UUID): TodoItemEntity?
 
+    @Query("DELETE FROM todo_items WHERE id = :id")
+    suspend fun deleteItemById(id: UUID)
+
 }

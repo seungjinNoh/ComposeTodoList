@@ -12,5 +12,6 @@ interface TodoItemRepository {
 
     suspend fun getTodoItemById(id: UUID): TodoItem?
 
+    suspend fun deleteItemById(id: UUID)
 
 }
