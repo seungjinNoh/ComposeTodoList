@@ -41,17 +41,9 @@ fun MainScreen(
 
     Scaffold(
         floatingActionButton = {
-            FloatingActionButton(onClick = {
-                viewModel.setSelectedItem(
-                    TodoItem(
-                        title = "",
-                        description = "",
-                        isComplete = false,
-                        createdDate = System.currentTimeMillis()
-                    )
-                )
-                navController.navigate("edit/new")
-            }) {
+            FloatingActionButton(
+                onClick = { navController.navigate("edit/new") }
+            ) {
                 Icon(Icons.Filled.Edit, contentDescription = "Edit")
             }
         }

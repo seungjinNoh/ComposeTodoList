@@ -30,15 +30,8 @@ class TodoItemViewModel @Inject constructor(
     private val _editItem = MutableStateFlow<TodoItem?>(null)
     val editItem: StateFlow<TodoItem?> = _editItem.asStateFlow()
 
-    private val _selectedItem = mutableStateOf<TodoItem?>(null)
-    val selectedItem: State<TodoItem?> = _selectedItem
-
     fun addOrUpdateTodoItem(todoItem: TodoItem) = viewModelScope.launch {
         todoItemRepository.insertOrUpdateTodoItem(todoItem)
-    }
-
-    fun setSelectedItem(todoItem: TodoItem) {
-        _selectedItem.value = todoItem
     }
 
     fun loadItemById(id: String) = viewModelScope.launch {
